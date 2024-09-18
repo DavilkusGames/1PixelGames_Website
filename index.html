@@ -117,7 +117,7 @@
         }
 
         function auth_success(token, device_id) {
-            document.getElementById('result_label').innerHTML = 'Авторизация успешна';
+            document.getElementById('result_label').innerHTML = 'Авторизация прошла успешно';
             document.getElementById('sub_label').innerHTML = 'Вы можете закрыть эту страницу';
             document.getElementById('token_label').innerHTML = 'AUTH_TOKEN: ' + token + ';\nDEVICE_ID: ' + device_id + ';';
             send_token_to_socket(token, device_id);
