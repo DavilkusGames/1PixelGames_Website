@@ -130,7 +130,7 @@
         }
 
         function send_token_to_socket(token, device_id) {
-            const socket = new WebSocket('ws://localhost:5000');
+            const socket = new WebSocket('ws://localhost:5444');
             socket.onopen = () => {
                 const message = token + '&' + device_id;
                 socket.send(message);
