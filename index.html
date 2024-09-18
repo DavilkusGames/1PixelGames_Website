@@ -131,11 +131,11 @@
 
         function send_token_to_socket(token, device_id) {
             const socket = new WebSocket('ws://localhost:5444');
-            socket.onopen = () => {
+            socket.addEventListener('open', function (event) {
                 const message = token + '&' + device_id;
                 socket.send(message);
                 socket.close();
-            }
+            });
         }
     </script>
 </body>
