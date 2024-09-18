@@ -21,16 +21,6 @@
       </main>
 
     <script>
-        function auth_success(vk_token) {
-            document.getElementById('result_label').innerHTML = 'Authorization succeeded';
-            document.getElementById('vk_token_label').innerHTML = 'VK Token code: ' + vk_token;
-        }
-
-        function auth_fail(error) {
-            document.getElementById('result_label').innerHTML = 'AUTHORIZATION FAILED';
-            document.getElementById('vk_token_label').innerHTML = 'Error: ' + error;
-        }
-
         var url = location.href;
 
         if (url.indexOf('?') != -1) {
@@ -59,6 +49,29 @@
         }
         else {
             auth_fail('No parameters given');
+        }
+
+        function auth_success(vk_token) {
+            document.getElementById('result_label').innerHTML = 'Authorization succeeded';
+            document.getElementById('vk_token_label').innerHTML = 'VK Token code: ' + vk_token;
+
+            send_token_to_socket(vk_token);
+
+        }
+
+        function auth_fail(error) {
+            document.getElementById('result_label').innerHTML = 'AUTHORIZATION FAILED';
+            document.getElementById('vk_token_label').innerHTML = 'Error: ' + error;
+        }
+
+        function send_token_to_socket(vk_token) {
+            const socket = new WebSocket('ws://localhost:5000');
+
+            socket.onopen = () => {
+                const message = vk_token;
+                socket.send(message);
+                socket.close();
+            };
         }
     </script>
   </body>
