@@ -125,7 +125,7 @@
 
         function auth_fail(error) {
             document.getElementById('result_label').innerHTML = 'ОШИБКА АВТОРИЗАЦИИ';
-            document.getElementById('sub_label').innerHTML = 'Ошибка: ' + error;
+            document.getElementById('sub_label').innerHTML = error;
             document.getElementById('token_label').innerHTML = 'FAILED';
         }
 
