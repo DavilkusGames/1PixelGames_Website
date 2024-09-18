@@ -129,13 +129,25 @@
             document.getElementById('token_label').innerHTML = 'FAILED';
         }
 
-        function send_token_to_socket(token, device_id) {
-            const socket = new WebSocket('ws://localhost:5444');
-            socket.addEventListener('open', function (event) {
-                const message = token + '&' + device_id;
-                socket.send(message);
-                socket.close();
-            });
+        async function send_token_to_socket(token, device_id) {
+            try {
+                full_data = token = '&' + device_id;
+                const response = await fetch(serverUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                    },
+                    body: full_data,
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                console.log('Token sent successfully');
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
         }
     </script>
 </body>
