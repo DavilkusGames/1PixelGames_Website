@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>VK_Transport Auth</title>
+    <title>Авторизация ВК</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300&display=swap" rel="stylesheet">
 
@@ -65,11 +65,11 @@
 </head>
 <body>
     <main>
-        <h1 id="result_label"> Authorization in progress</h1>
-        <p id="sub_label"> Please, wait...</p>
+        <h1 id="result_label">Авторизация</h1>
+        <p id="sub_label">Пожалуйста, подождите...</p>
 
         <div id="token_label" class="tiny-label">
-            Loading...
+            AUTH_TOKEN: NULL
         </div>
 
         <img class="icon" src="https://www.1pixelgames.ru/assets/icon.png" alt="Icon">
@@ -95,32 +95,32 @@
                 }
 
                 if (!param_found) {
-                    auth_fail('No parameter named \'code\' found');
+                    auth_fail('Параметр \'code\' не найден');
                 }
 
             }
 
             else {
-                auth_fail('Parameters length is zero');
+                auth_fail('Длина списка параметров = 0');
             }
 
         }
 
         else {
-            auth_fail('No parameters given');
+            auth_fail('Параметры не заданы');
         }
 
         function auth_success(vk_token) {
-            document.getElementById('result_label').innerHTML = 'Authorization succeeded';
-            document.getElementById('sub_label').innerHTML = 'You can close this page';
-            document.getElementById('token_label').innerHTML = 'Auth token: ' + vk_token;
+            document.getElementById('result_label').innerHTML = 'Авторизация успешна';
+            document.getElementById('sub_label').innerHTML = 'Вы можете закрыть эту страницу';
+            document.getElementById('token_label').innerHTML = 'AUTH_TOKEN: ' + vk_token;
             send_token_to_socket(vk_token);
         }
 
         function auth_fail(error) {
-            document.getElementById('result_label').innerHTML = 'AUTHORIZATION FAILED';
-            document.getElementById('sub_label').innerHTML = 'Error: ' + error;
-            document.getElementById('token_label').innerHTML = 'Failed';
+            document.getElementById('result_label').innerHTML = 'ОШИБКА АВТОРИЗАЦИИ';
+            document.getElementById('sub_label').innerHTML = 'Ошибка: ' + error;
+            document.getElementById('token_label').innerHTML = 'FAILED';
         }
 
         function send_token_to_socket(vk_token) {
