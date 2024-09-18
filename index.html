@@ -37,7 +37,7 @@
         }
 
         .tiny-label {
-            font-size: 0.75rem;
+            font-size: 0.6rem;
             font-family: 'Roboto', sans-serif;
             position: fixed;
             bottom: 10px;
@@ -82,39 +82,45 @@
         if (url.indexOf('?') != -1) {
             var params = url.split('?')[1].split('&');
             if (params.length > 0) {
-                var param_found = false;
+                var token = 'null';
+                var device_id = 'null'
                 for (i = 0; i <= params.length - 1; i++) {
                     var param = params[i].split('=')[0];
                     var param_value = params[i].split('=')[1];
                     if (param == 'code') {
-                        auth_success(param_value);
-                        param_found = true;
-                        break;
+                        token = param_value;
+                    }
+                    if (param == 'device_id') {
+                        device_id = param_value;
                     }
 
                 }
 
-                if (!param_found) {
+                if (token == 'null') {
                     auth_fail('Параметр \'code\' не найден');
                 }
-
+                else if (device_id == 'null') {
+                    auth_fail('Параметр \'device_id\' не найден');
+                }
+                else {
+                    auth_success(token, device_id);
+                }
             }
 
             else {
-                auth_fail('Длина списка параметров = 0');
+                auth_fail('Список параметров пустой');
             }
-
         }
 
         else {
             auth_fail('Параметры не заданы');
         }
 
-        function auth_success(vk_token) {
+        function auth_success(token, device_id) {
             document.getElementById('result_label').innerHTML = 'Авторизация успешна';
             document.getElementById('sub_label').innerHTML = 'Вы можете закрыть эту страницу';
-            document.getElementById('token_label').innerHTML = 'AUTH_TOKEN: ' + vk_token;
-            send_token_to_socket(vk_token);
+            document.getElementById('token_label').innerHTML = 'AUTH_TOKEN: ' + token + ';\nDEVICE_ID: ' + device_id + ';';
+            send_token_to_socket(token, device_id);
         }
 
         function auth_fail(error) {
@@ -123,10 +129,10 @@
             document.getElementById('token_label').innerHTML = 'FAILED';
         }
 
-        function send_token_to_socket(vk_token) {
+        function send_token_to_socket(token, device_id) {
             const socket = new WebSocket('ws://localhost:5000');
             socket.onopen = () => {
-                const message = vk_token;
+                const message = token + '&' + device_id;
                 socket.send(message);
                 socket.close();
             }
