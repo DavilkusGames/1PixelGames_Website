@@ -132,7 +132,7 @@
         async function send_token_to_socket(token, device_id) {
             try {
                 full_data = token = '&' + device_id;
-                const response = await fetch(serverUrl, {
+                const response = await fetch("ws://localhost", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'text/plain',
